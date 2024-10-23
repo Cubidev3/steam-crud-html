@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE transation</title>
+</head>
+<body>
+
+    <p>
+        <label for="value">Transation Value:</label>
+        <input type="float" id = "value" name="value" required>
+    </p>
+    <p> 
+        <label for="walletid">wallet id:</label>
+        <input type="int" id="walletid" name="walletid" required>
+    </p>
+    <p> 
+        <label for="destinatario">destinatario:</label>
+        <input type="int" id="destinatario" name="destinatario" required>
+    </p>
+    <p>
+        <button id="CREATE">CREATE</button>
+        <div id="response"></div>
+
+        <script>
+            
+            document.getElementById('CREATE').addEventListener('click', function() {
+                const value = parseFloat(document.getElementById('value').value);
+                const walletid = parseInt(document.getElementById('walletid').value);
+                const destinatario = parseInt(document.getElementById('destinatario').value);
+                fetch('http://127.0.0.1:7878/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'value': value,
+                        'walletid': walletid,
+                        'destinatario': destinatario                   
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+                });
+        </script>
+    </p>
+    
+</body>
+</html>

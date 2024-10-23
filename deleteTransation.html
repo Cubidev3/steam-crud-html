@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DELETE transation</title>
+</head>
+<body>
+    <p>
+        <label for="ID">ID:</label>
+        <input type="text" id = "ID" name="ID" required>
+    </p>
+    <button id="IDbutton">DELETE</button>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('IDbutton').addEventListener('click', function() {
+            const id = document.getElementById('ID').value;
+
+
+            fetch('http://127.0.0.1:7878/transactions/' + id, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na requisição: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</body>
+</html>

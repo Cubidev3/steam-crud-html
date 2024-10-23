@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update SteamAccount</title>
+</head>
+<body>
+    <p>
+        <label for="ID">ID:</label>
+        <input type="int" id="ID" name="ID" required>
+    </p>
+    <p>
+        <label for="novoname">New Name:</label>
+        <input type="text" id="novoname" name="novoname" required>
+    </p>
+    <p>
+        <label for="novoemail">New Email:</label>
+        <input type="text" id="novoemail" name="novoemail" required>
+    </p>
+    <p>
+        <label for="novasenha">New Password:</label>
+        <input type="text" id="novasenha" name="novasenha" required>
+    </p>
+    <p>
+
+        <button id="UPDATE">UPDATE</button>
+        <div id="response"></div>
+
+        <script>
+            document.getElementById('UPDATE').addEventListener('click', function() {
+                const id = document.getElementById('ID').value;
+                const name = document.getElementById('novoname').value;
+                const email = document.getElementById('novoemail').value;
+                const password = document.getElementById('novasenha').value;
+
+                fetch('http://127.0.0.1:7878/steamaccounts/' + id, {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'username': name,
+                        'email': email,
+                        'password': password
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na requisição: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            });
+        </script>
+    </p>
+</body>
+</html>

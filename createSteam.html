@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE SteamAccount</title>
+</head>
+<body>
+
+    <p>
+        <label for="name">UserName:</label>
+        <input type="text" id = "name" name="username" required>
+    </p>
+    <p> 
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+    </p>
+    <p>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password" required>
+    </p>
+        
+    <p>
+        <button id="CREATE">CREATE</button>
+        <div id="response"></div>
+
+        <script>
+            
+            document.getElementById('CREATE').addEventListener('click', function() {
+                const email = document.getElementById('email').value;
+                const name = document.getElementById('name').value;
+                const password = document.getElementById('password').value;
+
+                fetch('http://127.0.0.1:7878/steamaccounts', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'username': name,
+                        'email': email,
+                        'password': password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+                });
+        </script>
+    </p>
+    
+</body>
+</html>

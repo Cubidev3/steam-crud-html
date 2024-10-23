@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+</head>
+<body>
+
+    <p>
+        <label for="productname">Product Name:</label>
+        <input type="text" id = "productname" name="productname" required>
+    </p>
+    <p> 
+        <label for="productowner">Product Owner:</label>
+        <input type="text" id="productowner" name="productowner" required>
+    </p>
+    <p> 
+        <label for="categoryid">Category Id:</label>
+        <input type="int" id="categoryid" name="categoryid" required>
+    </p>
+    <p> 
+        <label for="productid">Product Id:</label>
+        <input type="int" id="productid" name="productid" required>
+    </p>
+    <p>
+
+        <button id="UPDATE">UPDATE</button>
+        <div id="response"></div>
+
+        <script>
+            document.getElementById('UPDATE').addEventListener('click', function() {
+
+                const owner = document.getElementById('productowner').value;
+                const name = document.getElementById('productname').value;
+                const categoryid = parseInt(document.getElementById('categoryid').value);
+                const id = document.getElementById('productid').value;
+
+                fetch('http://127.0.0.1:7878/products/' + id, {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'productowner': owner,
+                        'productname': name,
+                        'categoryid': categoryid    
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na requisição: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            });
+        </script>
+    </p>
+</body>
+</html>
